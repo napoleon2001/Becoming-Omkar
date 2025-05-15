@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>🔥 Your Insane Progress Tracker 🔥</title>
+<style>
+  body {
+    background: #121212; color: #eee; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 600px; margin: 30px auto; padding: 20px;
+  }
+  h1 {
+    color: #ff3b3b; text-align: center; margin-bottom: 8px;
+  }
+  .quote {
+    font-style: italic; text-align: center; margin-bottom: 30px; color: #ff7777;
+  }
+  textarea {
+    width: 100%; height: 100px; background: #222; border: none; border-radius: 6px; padding: 10px;
+    color: #eee; font-size: 16px; resize: vertical;
+  }
+  label {
+    display: block; margin: 15px 0 6px; font-weight: 600;
+  }
+  button {
+    background: #ff3b3b; border: none; padding: 12px 18px; border-radius: 6px;
+    color: white; font-weight: 700; font-size: 16px; cursor: pointer;
+    width: 100%;
+  }
+  button:hover {
+    background: #ff0000;
+  }
+  .checkboxes {
+    display: flex; justify-content: space-around; margin: 20px 0;
+  }
+  .checkboxes label {
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+  }
+  #log {
+    margin-top: 30px; max-height: 300px; overflow-y: auto;
+    background: #222; padding: 15px; border-radius: 8px;
+  }
+  .entry {
+    border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 10px;
+  }
+  .entry .date {
+    font-size: 12px; color: #999;
+  }
+  .entry p {
+    margin: 5px 0 0;
+    white-space: pre-wrap;
+  }
+</style>
+</head>
+<body>
+<h1>🔥 Insane Progress Tracker 🔥</h1>
+<div class="quote" id="quote"></div>
+
+<label for="entry">Write your daily mental & physical progress:</label>
+<textarea id="entry" placeholder="Wins, mindset notes, workout details..."></textarea>
+
+<div class="checkboxes">
+  <label><input type="checkbox" id="workout" /> Workout done</label>
+  <label><input type="checkbox" id="coldShower" /> Cold shower done</label>
+  <label><input type="checkbox" id="meditation" /> Meditation done</label>
+</div>
+
+<button onclick="addEntry()">Add Progress</button>
+
+<div id="log"></div>
+
+<script>
+const quotes = [
+  "Discipline equals freedom. – Jocko Willink",
+  "You become what you repeatedly do. – Sean Covey",
+  "The pain you feel today will be the strength you feel tomorrow.",
+  "Comfort zones are where dreams go to die.",
+  "Sweat more in practice, bleed less in battle.",
+  "Do something today that your future self will thank you for.",
+  "Success is built on consistency, not perfection.",
+  "The body achieves what the mind believes."
+];
+
+function randomQuote() {
+  const q = quotes[Math.floor(Math.random() * quotes.length)];
+  document.getElementById('quote').textContent = q;
+}
+
+randomQuote();
+
+function addEntry() {
+  const entryText = document.getElementById('entry').value.trim();
+  if (!entryText) return alert("Write something before adding!");
+  
+  const workoutDone = document.getElementById('workout').checked;
+  const coldShowerDone = document.getElementById('coldShower').checked;
+  const meditationDone = document.getElementById('meditation').checked;
+  
+  const now = new Date();
+  const entry = {
+    date: now.toLocaleString(),
+    text: entryText,
+    workout: workoutDone,
+    coldShower: coldShowerDone,
+    meditation: meditationDone
+  };
+  
+  let logs = JSON.parse(localStorage.getItem('insaneTrackerLogs') || "[]");
+  logs.unshift(entry);
+  localStorage.setItem('insaneTrackerLogs', JSON.stringify(logs));
+  renderLogs();
+  
+  // Reset inputs
+  document.getElementById('entry').value = "";
+  document.getElementById('workout').checked = false;
+  document.getElementById('coldShower').checked = false;
+  document.getElementById('meditation').checked = false;
+}
+
+function renderLogs() {
+  const logDiv = document.getElementById('log');
+  logDiv.innerHTML = "";
+  let logs = JSON.parse(localStorage.getItem('insaneTrackerLogs') || "[]");
+  if (logs.length === 0) {
+    logDiv.innerHTML = "<p>No progress logged yet. Start crushing it today!</p>";
+    return;
+  }
+  
+  logs.forEach(e => {
+    const div = document.createElement('div');
+    div.className = "entry";
+    
+    const dateSpan = document.createElement('div');
+    dateSpan.className = "date";
+    dateSpan.textContent = e.date;
+    
+    const textP = document.createElement('p');
+    textP.textContent = e.text;
+    
+    const extras = [];
+    if (e.workout) extras.push("💪 Workout done");
+    if (e.coldShower) extras.push("❄️ Cold shower done");
+    if (e.meditation) extras.push("🧘 Meditation done");
+    
+    const extrasP = document.createElement('p');
+    extrasP.style.color = "#ff3b3b";
+    extrasP.textContent = extras.join(" | ");
+    
+    div.appendChild(dateSpan);
+    div.appendChild(textP);
+    if (extras.length) div.appendChild(extrasP);
+    
+    logDiv.appendChild(div);
+  });
+}
+
+renderLogs();
+</script>
+</body>
+</html>
