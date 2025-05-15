@@ -3,686 +3,456 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Omkar’s Insane Progress Tracker</title>
+<title>Becoming Omkar - Dark Rustic Growth Hub</title>
 <style>
-  /* Dark rustic colors */
-  :root {
-    --bg: #1b1b1b;
-    --text: #eee6dc;
-    --accent1: #d35400;  /* burnt orange */
-    --accent2: #8b2500;  /* dark red */
-    --accent3: #cc7722;  /* ochre */
-    --shadow: rgba(211, 84, 0, 0.5);
-  }
-  @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&family=Share+Tech+Mono&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Roboto+Slab&display=swap');
+
+  /* Dark rustic theme */
   body {
-    margin:0; padding:0;
-    font-family: 'Share Tech Mono', monospace;
-    background-color: var(--bg);
-    color: var(--text);
-    user-select: none;
+    margin: 0;
+    font-family: 'Libre Baskerville', serif;
+    background: #1b1a17;
+    color: #ccc7b9;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
   }
   header {
-    text-align: center;
-    padding: 1rem 1rem 0.5rem;
-    font-family: 'Roboto Slab', serif;
-    font-size: 2.2rem;
-    letter-spacing: 3px;
-    color: var(--accent1);
-    text-shadow: 0 0 10px var(--accent1);
-    text-transform: uppercase;
-    border-bottom: 2px solid var(--accent2);
-    margin-bottom: 1rem;
+    background: #3c352f;
+    padding: 15px 30px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #f4f1de;
+    text-shadow: 1px 1px 2px #000000cc;
   }
   nav {
+    background: #2d2a24;
     display: flex;
     justify-content: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
+    gap: 30px;
   }
   nav button {
-    background: transparent;
-    border: 2px solid var(--accent3);
-    color: var(--accent3);
-    font-family: 'Roboto Slab', serif;
-    font-weight: 700;
-    padding: 0.4rem 1rem;
-    border-radius: 4px;
+    background: none;
+    border: none;
+    color: #ccc7b9;
+    font-size: 1.1rem;
+    padding: 15px 20px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
+    border-bottom: 3px solid transparent;
+    font-family: 'Roboto Slab', serif;
+    transition: border-color 0.3s ease, color 0.3s ease;
   }
-  nav button:hover, nav button.active {
-    background-color: var(--accent3);
-    color: var(--bg);
-    box-shadow: 0 0 10px var(--accent3);
+  nav button.active, nav button:hover {
+    color: #f4f1de;
+    border-bottom: 3px solid #f4f1de;
   }
   main {
-    max-width: 800px;
-    margin: auto;
-    padding: 0 1rem 2rem;
+    flex: 1;
+    padding: 25px 40px;
+    max-width: 900px;
+    margin: 0 auto;
+    background: #29241f;
+    box-shadow: 0 0 15px #000a inset;
+    border-radius: 10px;
+    overflow-y: auto;
   }
-  section {
-    display: none;
-    animation: fadeIn 1s ease forwards;
+  h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #e9d8a6;
+    text-shadow: 1px 1px 3px #000a;
   }
-  section.active {
+  /* Tasks styling */
+  #taskList label {
     display: block;
-  }
-  @keyframes fadeIn {
-    from {opacity: 0; transform: translateY(15px);}
-    to {opacity: 1; transform: translateY(0);}
-  }
-  /* Tasks styles */
-  #tasks ul {
-    list-style: none;
-    padding: 0;
-  }
-  #tasks li {
-    background: #2e2e2e;
-    margin-bottom: 0.75rem;
-    padding: 0.8rem 1rem;
-    border-left: 6px solid var(--accent1);
-    display: flex;
-    align-items: center;
+    margin-bottom: 14px;
+    font-size: 1.15rem;
     cursor: pointer;
-    transition: background 0.3s ease;
-    box-shadow: 0 0 5px rgba(0,0,0,0.5);
-  }
-  #tasks li:hover {
-    background: #442a0f;
-    box-shadow: 0 0 10px var(--accent1);
-  }
-  #tasks li.completed {
-    text-decoration: line-through;
-    opacity: 0.6;
-    border-left-color: var(--accent2);
-    background: #3a2a1a;
-  }
-  #tasks input[type="checkbox"] {
-    margin-right: 1rem;
-    width: 20px;
-    height: 20px;
-    accent-color: var(--accent1);
-    cursor: pointer;
-  }
-  /* Progress bar */
-  #progress-container {
-    background: #2e2e2e;
-    border-radius: 20px;
-    overflow: hidden;
-    margin: 1rem 0 2rem;
-    height: 20px;
-    box-shadow: inset 0 0 8px rgba(0,0,0,0.7);
-  }
-  #progress-bar {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--accent1), var(--accent3));
-    box-shadow: 0 0 10px var(--accent1);
-    transition: width 0.6s ease;
-  }
-  /* Quotes */
-  #quotes {
-    font-style: italic;
-    font-size: 1.2rem;
-    border-left: 5px solid var(--accent3);
-    padding-left: 1rem;
-    margin-bottom: 2rem;
-    min-height: 100px;
     position: relative;
+    padding-left: 32px;
+    user-select: none;
   }
-  #quotes::before {
-    content: '“';
-    font-size: 3rem;
-    color: var(--accent1);
+  #taskList input[type="checkbox"] {
     position: absolute;
     left: 0;
-    top: -10px;
-    opacity: 0.3;
-    font-family: 'Georgia', serif;
+    top: 3px;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
   }
-  #quotes-footer {
-    text-align: right;
-    font-weight: 700;
-    color: var(--accent2);
-    font-size: 1rem;
-    margin-top: 0.5rem;
+  #taskList input[type="checkbox"]:checked + span {
+    text-decoration: line-through;
+    color: #7f7f7f;
   }
-  /* Stories and Minds */
-  .content-text {
-    background: #2e2e2e;
-    padding: 1rem;
-    border-left: 5px solid var(--accent1);
-    box-shadow: 0 0 12px var(--shadow);
-    line-height: 1.5;
-    font-size: 1.1rem;
-    max-height: 350px;
+  .completed-time {
+    color: #a89f91;
+    font-size: 0.9rem;
+    margin-left: 8px;
+    font-style: italic;
+  }
+  /* Quotes & stories styling */
+  blockquote {
+    font-style: italic;
+    border-left: 5px solid #f4f1de;
+    margin: 1rem 0 1rem 0;
+    padding-left: 15px;
+    color: #dfd7c0;
+  }
+  /* Stories & long text container */
+  .story-container {
+    max-height: 400px;
     overflow-y: auto;
-    user-select: text;
-  }
-  /* Admin */
-  #admin label, #admin textarea, #admin input {
-    display: block;
-    width: 100%;
-    margin-bottom: 0.5rem;
-    padding: 0.5rem;
-    border: none;
-    border-radius: 4px;
-    font-family: 'Share Tech Mono', monospace;
+    background: #1f1c17;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px #0008;
+    line-height: 1.5;
     font-size: 1rem;
+    color: #d0c8b0;
   }
-  #admin textarea {
-    height: 80px;
+  /* Small tab for editing tasks */
+  #editTasksToggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #3c352f;
+    border: none;
+    color: #f4f1de;
+    padding: 12px 18px;
+    font-size: 1rem;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 0 10px #000;
+    z-index: 1000;
+  }
+  #editTasksPanel {
+    position: fixed;
+    bottom: 70px;
+    right: 20px;
+    width: 300px;
+    max-height: 350px;
+    background: #29241f;
+    border-radius: 10px;
+    box-shadow: 0 0 15px #000;
+    padding: 15px;
+    overflow-y: auto;
+    display: none;
+    font-size: 1rem;
+    color: #f4f1de;
+    font-family: 'Roboto Slab', serif;
+    z-index: 999;
+  }
+  #editTasksPanel textarea {
+    width: 100%;
+    height: 200px;
+    background: #3c352f;
+    border: none;
+    border-radius: 6px;
+    color: #ccc7b9;
+    font-family: 'Roboto Slab', serif;
+    font-size: 1rem;
+    padding: 10px;
     resize: vertical;
   }
-  #admin button {
-    background-color: var(--accent1);
+  #editTasksPanel button {
+    margin-top: 10px;
+    background: #f4f1de;
+    color: #3c352f;
     border: none;
-    color: var(--bg);
+    padding: 10px 15px;
+    border-radius: 6px;
     font-weight: 700;
-    padding: 0.6rem 1.2rem;
     cursor: pointer;
-    margin-top: 0.5rem;
-    border-radius: 4px;
-    transition: background 0.3s ease;
+    width: 100%;
   }
-  #admin button:hover {
-    background-color: var(--accent2);
+  /* Animations */
+  .fade-in {
+    animation: fadeIn 1s ease forwards;
   }
-  .list-item {
-    background: #3a2a1a;
-    margin-bottom: 0.4rem;
-    padding: 0.6rem 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: inset 0 0 5px var(--shadow);
-  }
-  .list-item button {
-    background: var(--accent3);
-    border: none;
-    padding: 0.3rem 0.7rem;
-    cursor: pointer;
-    font-weight: 700;
-    border-radius: 3px;
-    color: var(--bg);
-  }
-  .list-item button:hover {
-    background: var(--accent2);
-  }
-  /* Confetti container */
-  #confetti {
-    pointer-events: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    z-index: 9999;
-    overflow: visible;
-  }
-  /* Scrollbar for content */
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-  ::-webkit-scrollbar-track {
-    background: #2e2e2e;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: var(--accent3);
-    border-radius: 4px;
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
   }
   /* Responsive */
-  @media (max-width: 600px) {
-    header {
-      font-size: 1.8rem;
-      letter-spacing: 1.5px;
+  @media(max-width: 600px) {
+    main {
+      padding: 15px 20px;
     }
     nav {
-      flex-wrap: wrap;
+      gap: 15px;
     }
     nav button {
-      flex: 1 1 40%;
-      margin-bottom: 0.5rem;
+      padding: 10px 12px;
+      font-size: 1rem;
     }
   }
 </style>
 </head>
 <body>
-<header>Omkar’s Insane Progress Tracker</header>
-
+<header>Becoming Omkar - Growth Hub</header>
 <nav>
   <button class="tab-btn active" data-tab="tasks">Tasks</button>
   <button class="tab-btn" data-tab="quotes">Quotes</button>
-  <button class="tab-btn" data-tab="stories">Stories</button>
-  <button class="tab-btn" data-tab="minds">Great Minds</button>
-  <button class="tab-btn" data-tab="today">Today’s Hard Truth</button>
-  <button class="tab-btn" data-tab="admin">Admin</button>
+  <button class="tab-btn" data-tab="stories">Psychological Stories</button>
+  <button class="tab-btn" data-tab="greats">Napoleon & Great Minds</button>
+  <button class="tab-btn" data-tab="truths">Hard Truths</button>
 </nav>
 
 <main>
-  <!-- Tasks Tab -->
-  <section id="tasks" class="active">
-    <div id="progress-container">
-      <div id="progress-bar"></div>
-    </div>
-    <ul id="task-list"></ul>
+  <section id="tasks" class="tab-content fade-in">
+    <h2>Daily Tasks</h2>
+    <div id="taskList"></div>
   </section>
-
-  <!-- Quotes Tab -->
-  <section id="quotes">
-    <div id="quote-text">Loading quote...</div>
-    <div id="quotes-footer"></div>
-    <button id="new-quote" style="margin-top:1rem; background: var(--accent3); color: var(--bg); border:none; padding:0.5rem 1rem; cursor:pointer; border-radius:4px;">New Quote</button>
+  <section id="quotes" class="tab-content" style="display:none;">
+    <h2>Deep Quotes</h2>
+    <blockquote id="quoteText"></blockquote>
+    <p id="quoteAuthor" style="text-align:right; font-weight:bold; color:#bfb18f;"></p>
   </section>
-
-  <!-- Stories Tab -->
-  <section id="stories">
-    <div class="content-text" id="story-content"></div>
+  <section id="stories" class="tab-content" style="display:none;">
+    <h2>Psychological Stories & Thoughts</h2>
+    <div class="story-container" id="storyContent"></div>
   </section>
-
-  <!-- Great Minds Tab -->
-  <section id="minds">
-    <div class="content-text" id="minds-content"></div>
+  <section id="greats" class="tab-content" style="display:none;">
+    <h2>Napoleon & Great Minds</h2>
+    <div class="story-container" id="greatsContent"></div>
   </section>
-
-  <!-- Today’s Hard Truth Tab -->
-  <section id="today">
-    <div class="content-text" id="truth-content"></div>
-  </section>
-
-  <!-- Admin Tab -->
-  <section id="admin">
-    <h3>Add New Task</h3>
-    <input type="text" id="new-task-input" placeholder="Task description" />
-    <button id="add-task-btn">Add Task</button>
-
-    <h3>Add New Quote</h3>
-    <textarea id="new-quote-text" placeholder="Quote text"></textarea>
-    <input type="text" id="new-quote-author" placeholder="Author" />
-    <button id="add-quote-btn">Add Quote</button>
-
-    <h3>Manage Tasks</h3>
-    <div id="manage-tasks"></div>
-
-    <h3>Manage Quotes</h3>
-    <div id="manage-quotes"></div>
+  <section id="truths" class="tab-content" style="display:none;">
+    <h2>Hard Truths</h2>
+    <div class="story-container" id="truthsContent"></div>
   </section>
 </main>
 
-<!-- Confetti Container -->
-<canvas id="confetti"></canvas>
+<button id="editTasksToggle" title="Edit Tasks">⚙️ Edit Tasks</button>
+<div id="editTasksPanel">
+  <h3>Edit Your Tasks (one task per line):</h3>
+  <textarea id="tasksTextarea"></textarea>
+  <button id="saveTasksBtn">Save Tasks</button>
+</div>
 
 <script>
-  // Data arrays - default tasks and quotes
+  // Data
   let tasks = [
-    "Wake up at 5 AM and meditate 15 minutes",
-    "Cold shower to shock your system",
-    "30 pushups and 20 squats",
-    "Read 10 pages of a philosophy or psychology book",
-    "Write down 3 things you’re grateful for",
-    "Plan your day with strict time blocks",
-    "Avoid social media till 10 AM",
-    "No junk food, eat clean and hydrate",
-    "Practice deep breathing for 5 minutes",
-    "Visualize your goals with intensity",
-    "Work out for at least 45 minutes",
-    "Review your progress before sleep"
+    "Wake up early",
+    "Read 3 things you are grateful for (remember to feel grateful for being alive)",
+    "Avoid social media",
+    "Work out 20 mins",
+    "Drink water",
+    "Meditate 10 mins",
+    "Sleep by 10 PM"
   ];
 
-  let quotes = [
-    {text: "He who fears death will never do anything worth of a man who is alive.", author:"Seneca"},
-    {text: "If you want a thing done well, do it yourself.", author:"Napoleon Bonaparte"},
-    {text: "The more we value things outside our control, the less control we have.", author:"Epictetus"},
-    {text: "That which does not kill us makes us stronger.", author:"Friedrich Nietzsche"},
-    {text: "Discipline is the bridge between goals and accomplishment.", author:"Jim Rohn"},
-    {text: "You have power over your mind – not outside events. Realize this, and you will find strength.", author:"Marcus Aurelius"},
-    {text: "Small deeds done are better than great deeds planned.", author:"Peter Marshall"},
-    {text: "The harder the conflict, the more glorious the triumph.", author:"Thomas Paine"},
-    {text: "It always seems impossible until it’s done.", author:"Nelson Mandela"},
-    {text: "The best revenge is massive success.", author:"Frank Sinatra"},
+  const quotes = [
+    {text: "He who conquers himself is the mightiest warrior.", author: "Confucius"},
+    {text: "The obstacle is the way.", author: "Marcus Aurelius"},
+    {text: "Victory belongs to the most persevering.", author: "Napoleon Bonaparte"},
+    {text: "What we achieve inwardly will change outer reality.", author: "Plutarch"},
+    {text: "The happiness of your life depends upon the quality of your thoughts.", author: "Marcus Aurelius"},
+    {text: "Small daily improvements lead to stunning results.", author: "Robin Sharma"},
+    {text: "Do not pray for an easy life, pray for the strength to endure a difficult one.", author: "Bruce Lee"},
+    {text: "The only limit to our realization of tomorrow is our doubts of today.", author: "Franklin D. Roosevelt"},
+    {text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", author: "Winston Churchill"},
+    {text: "The mind is everything. What you think you become.", author: "Buddha"}
   ];
 
-  let stories = [
-    `Psychological Story: The Power of Perception
-    <br><br>
-    A man walked into a village and told the people, "The sky is falling!" Panic spread rapidly, yet the sky was unchanged. The story illustrates how perception and belief can shape reality more powerfully than the truth. Control your perception, and you control your world.`,
-    
-    `The Growth Mindset Shift
-    <br><br>
-    Carol Dweck’s research shows that believing your abilities can improve through effort leads to greater success. A student who failed math repeatedly but believed in growth eventually mastered it by consistent work. Your mindset is your superpower.`,
-
-    `Napoleon’s Strategic Mind
-    <br><br>
-    Napoleon didn’t win by brute force alone. He used rapid movement, surprise, and intelligence to outthink enemies. His adaptability teaches us that mental flexibility combined with bold action conquers obstacles.`,
-
-    `The Dopamine Loop Trap
-    <br><br>
-    Our brain craves rewards. But the constant dopamine hit from phones and junk food traps us in cycles of distraction. Awareness and discipline are the keys to breaking this loop and reclaiming focus.`
+  const stories = [
+    `In a small village, a man faced constant despair. Every day he chose to write three things he was grateful for, no matter how small. Slowly, his perspective shifted — he began to see light through the cracks of his suffering. Gratitude rewired his brain and saved his life.`,
+    `A soldier fighting in a brutal war journaled his fears and doubts every night. By confronting his inner darkness, he gained mastery over his mind. This courage was his true victory, more than any battlefield conquest.`,
+    `A woman overwhelmed by social media’s chaos committed to avoid it for a month. The silence gave her clarity, helping her reconnect with her purpose and passions. She discovered the power of being present rather than distracted.`,
+    `Napoleon once said, "A leader is a dealer in hope." Small acts of hope in daily life ripple out, shaping the future more than grand gestures. Never underestimate the power of your daily mindset shift.`
   ];
 
-  let minds = [
-    `Napoleon Bonaparte:
-    <br><br>
-    “Impossible is a word to be found only in the dictionary of fools.”`,
-    `Marcus Aurelius:
-    <br><br>
-    “You have power over your mind – not outside events. Realize this, and you will find strength.”`,
-    `Friedrich Nietzsche:
-    <br><br>
-    “He who has a why to live can bear almost any how.”`,
-    `Epictetus:
-    <br><br>
-    “It's not what happens to you, but how you react to it that matters.”`,
-    `Seneca:
-    <br><br>
-    “Luck is what happens when preparation meets opportunity.”`
+  const greats = [
+    `Napoleon Bonaparte rose from obscurity to reshape Europe. His secret: relentless self-discipline and belief in the impossible. He knew that changing oneself was the first step to changing the world.`,
+    `Marcus Aurelius, a Roman emperor and stoic philosopher, taught that we control only our thoughts and actions. The rest is fate. This inner freedom is the core of true strength.`,
+    `Friedrich Nietzsche challenged norms and dared to question truth itself. His idea of becoming 'the Overman' is about transcending limits to create your own values.`,
+    `Leonardo da Vinci combined art and science, curiosity and discipline, proving the power of a versatile mind and constant learning.`
   ];
 
-  let hardTruths = [
-    `Hard Truth #1: No one owes you success. You must earn it with relentless effort every single day.`,
-    `Hard Truth #2: Comfort zones are death zones for growth. If it’s easy, you’re not improving.`,
-    `Hard Truth #3: Most people quit right before they’d succeed. Don't be most people.`,
-    `Hard Truth #4: Your habits shape your destiny, not your wishes.`,
-    `Hard Truth #5: Life will test you. Your character is revealed in how you respond to failure.`
+  const truths = [
+    `Life is unfair — accepting this truth frees you from pointless resentment and lets you focus on what you can control.`,
+    `You won't always feel motivated; discipline is what bridges the gap between goals and achievements.`,
+    `You cannot change others, only yourself. Changing yourself often changes how others treat you.`,
+    `Time is your most valuable resource. Spend it on what truly matters — distractions steal your future.`,
+    `Fear and discomfort are signs that you are growing. Lean into them rather than avoiding.`,
+    `Success demands sacrifice. Choose what you're willing to give up for what you want.`,
+    `Most people live small because they fear failure. Be willing to fail big to win big.`
   ];
 
-  // Save/load from localStorage for persistence
-  function saveData() {
-    localStorage.setItem('omkar_tasks', JSON.stringify(tasks));
-    localStorage.setItem('omkar_quotes', JSON.stringify(quotes));
-    localStorage.setItem('omkar_tasks_completed', JSON.stringify(completedTasks));
-  }
+  // Elements
+  const tabs = document.querySelectorAll('.tab-btn');
+  const contents = document.querySelectorAll('.tab-content');
+  const taskList = document.getElementById('taskList');
+  const quoteText = document.getElementById('quoteText');
+  const quoteAuthor = document.getElementById('quoteAuthor');
+  const storyContent = document.getElementById('storyContent');
+  const greatsContent = document.getElementById('greatsContent');
+  const truthsContent = document.getElementById('truthsContent');
 
-  function loadData() {
-    let t = JSON.parse(localStorage.getItem('omkar_tasks'));
-    if (t && Array.isArray(t) && t.length > 0) tasks = t;
-    let q = JSON.parse(localStorage.getItem('omkar_quotes'));
-    if (q && Array.isArray(q) && q.length > 0) quotes = q;
-    let c = JSON.parse(localStorage.getItem('omkar_tasks_completed'));
-    if (c && Array.isArray(c)) completedTasks = c;
-  }
+  // Task completion storage
+  let completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || [];
+  let completionTimes = JSON.parse(localStorage.getItem('completionTimes')) || {};
 
-  // Task completion tracking
-  let completedTasks = [];
-
-  // Initialize tasks list UI
-  const taskList = document.getElementById('task-list');
-  const progressBar = document.getElementById('progress-bar');
-
-  function renderTasks() {
-    taskList.innerHTML = '';
-    tasks.forEach((task, idx) => {
-      const li = document.createElement('li');
-      li.className = completedTasks.includes(idx) ? 'completed' : '';
-      li.innerHTML = `<input type="checkbox" data-idx="${idx}" ${completedTasks.includes(idx) ? 'checked' : ''} />
-        <span>${task}</span>`;
-      taskList.appendChild(li);
-    });
-    updateProgress();
-  }
-
-  function updateProgress() {
-    const progressPercent = (completedTasks.length / tasks.length) * 100;
-    progressBar.style.width = progressPercent + '%';
-    if(progressPercent === 100) launchConfetti();
-  }
-
-  // Confetti animation (simple version)
-  const confettiCanvas = document.getElementById('confetti');
-  const ctx = confettiCanvas.getContext('2d');
-  let confettiPieces = [];
-
-  function randomRange(min, max) {
-    return Math.random() * (max - min) + min;
-  }
-
-  function createConfetti() {
-    const colors = [varToRgb('--accent1'), varToRgb('--accent3'), varToRgb('--accent2'), '#fff'];
-    for(let i = 0; i < 150; i++) {
-      confettiPieces.push({
-        x: randomRange(0, confettiCanvas.width),
-        y: randomRange(-confettiCanvas.height, 0),
-        size: randomRange(5, 12),
-        color: colors[Math.floor(Math.random() * colors.length)],
-        speed: randomRange(1, 4),
-        tilt: randomRange(-15, 15),
-        tiltSpeed: randomRange(0.05, 0.1),
-        angle: randomRange(0, Math.PI * 2)
-      });
-    }
-  }
-  function varToRgb(name) {
-    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-  }
-
-  function drawConfetti() {
-    ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
-    confettiPieces.forEach(p => {
-      ctx.save();
-      ctx.fillStyle = p.color;
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.angle);
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.lineTo(p.size / 2, p.size);
-      ctx.lineTo(-p.size / 2, p.size);
-      ctx.closePath();
-      ctx.fill();
-      ctx.restore();
-
-      p.y += p.speed;
-      p.x += Math.sin(p.angle) * 0.5;
-      p.angle += p.tiltSpeed;
-      if(p.y > confettiCanvas.height) {
-        p.y = randomRange(-confettiCanvas.height, 0);
-        p.x = randomRange(0, confettiCanvas.width);
-      }
-    });
-  }
-
-  let confettiRunning = false;
-  function launchConfetti() {
-    if(confettiRunning) return;
-    confettiRunning = true;
-    confettiCanvas.width = window.innerWidth;
-    confettiCanvas.height = window.innerHeight;
-    createConfetti();
-    let confettiInterval = setInterval(() => {
-      drawConfetti();
-    }, 16);
-
-    setTimeout(() => {
-      clearInterval(confettiInterval);
-      confettiRunning = false;
-      confettiPieces = [];
-      ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-    }, 8000);
-  }
-
-  // Quotes UI
-  const quoteText = document.getElementById('quote-text');
-  const quoteFooter = document.getElementById('quotes-footer');
-  const newQuoteBtn = document.getElementById('new-quote');
-
-  function getRandomQuote() {
-    const q = quotes[Math.floor(Math.random() * quotes.length)];
-    return q;
-  }
-
-  function showQuote() {
-    const q = getRandomQuote();
-    quoteText.innerHTML = `"${q.text}"`;
-    quoteFooter.innerHTML = `- ${q.author}`;
-  }
-
-  newQuoteBtn.addEventListener('click', showQuote);
-
-  // Stories UI
-  const storyContent = document.getElementById('story-content');
-  let currentStoryIndex = 0;
-
-  function showStory() {
-    storyContent.innerHTML = stories[currentStoryIndex];
-  }
-
-  // Minds UI
-  const mindsContent = document.getElementById('minds-content');
-  let currentMindIndex = 0;
-
-  function showMind() {
-    mindsContent.innerHTML = minds[currentMindIndex];
-  }
-
-  // Hard Truths UI
-  const truthContent = document.getElementById('truth-content');
-  let currentTruthIndex = 0;
-
-  function showTruth() {
-    truthContent.innerHTML = hardTruths[currentTruthIndex];
-  }
-
-  // Navigation & tab switching
-  const tabs = document.querySelectorAll('nav button');
+  // Render tabs
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      document.querySelectorAll('section').forEach(s => s.style.display = 'none');
-      const target = tab.getAttribute('data-target');
-      document.getElementById(target).style.display = 'block';
-
-      // Show content on tab switch
-      if(target === 'quotes') showQuote();
-      else if(target === 'stories') showStory();
-      else if(target === 'minds') showMind();
-      else if(target === 'today') showTruth();
-      else if(target === 'tasks') renderTasks();
-      else if(target === 'admin') renderAdmin();
+      tabs.forEach(b => b.classList.remove('active'));
+      tab.classList.add('active');
+      const target = tab.dataset.tab;
+      contents.forEach(c => {
+        if(c.id === target) c.style.display = '';
+        else c.style.display = 'none';
+      });
+      if(target === 'quotes') loadQuote();
+      if(target === 'stories') loadStory();
+      if(target === 'greats') loadGreats();
+      if(target === 'truths') loadTruth();
     });
   });
 
-  // Initial tab display
-  document.getElementById('tasks').style.display = 'block';
-
-  // Task checkbox handling
-  taskList.addEventListener('change', e => {
-    if(e.target.matches('input[type="checkbox"]')) {
-      const idx = parseInt(e.target.getAttribute('data-idx'));
-      if(e.target.checked) {
-        if(!completedTasks.includes(idx)) completedTasks.push(idx);
-      } else {
-        const i = completedTasks.indexOf(idx);
-        if(i !== -1) completedTasks.splice(i, 1);
-      }
-      renderTasks();
-      saveData();
-    }
-  });
-
-  // Admin tab functionality
-  const newTaskInput = document.getElementById('new-task-input');
-  const addTaskBtn = document.getElementById('add-task-btn');
-  const newQuoteText = document.getElementById('new-quote-text');
-  const newQuoteAuthor = document.getElementById('new-quote-author');
-  const addQuoteBtn = document.getElementById('add-quote-btn');
-  const manageTasksDiv = document.getElementById('manage-tasks');
-  const manageQuotesDiv = document.getElementById('manage-quotes');
-
-  function renderAdmin() {
-    // Manage tasks
-    manageTasksDiv.innerHTML = '';
-    tasks.forEach((task, idx) => {
-      const div = document.createElement('div');
-      div.style.marginBottom = '0.5rem';
-      div.innerHTML = `<input type="text" data-idx="${idx}" value="${task}" style="width:80%;" />
-      <button data-idx="${idx}" class="delete-task-btn">Delete</button>`;
-      manageTasksDiv.appendChild(div);
+  // Render tasks with timestamp
+  function renderTasks() {
+    taskList.innerHTML = '';
+    tasks.forEach((task, i) => {
+      const label = document.createElement('label');
+      const completed = completedTasks.includes(i);
+      label.innerHTML = `
+        <input type="checkbox" data-index="${i}" ${completed ? 'checked' : ''} />
+        <span>${task}</span>
+        ${completed ? `<span class="completed-time">(Completed at ${completionTimes[i]})</span>` : ''}
+      `;
+      taskList.appendChild(label);
     });
 
-    // Manage quotes
-    manageQuotesDiv.innerHTML = '';
-    quotes.forEach((quote, idx) => {
-      const div = document.createElement('div');
-      div.style.marginBottom = '0.5rem';
-      div.innerHTML = `<textarea data-idx="${idx}" style="width:80%;">${quote.text}</textarea>
-      <input type="text" data-idx="${idx}" value="${quote.author}" placeholder="Author" style="width:15%; margin-left:0.5rem;" />
-      <button data-idx="${idx}" class="delete-quote-btn">Delete</button>`;
-      manageQuotesDiv.appendChild(div);
+    // Add listeners to checkboxes
+    taskList.querySelectorAll('input[type=checkbox]').forEach(cb => {
+      cb.addEventListener('change', e => {
+        const idx = Number(e.target.dataset.index);
+        if(e.target.checked) {
+          if(!completedTasks.includes(idx)) {
+            completedTasks.push(idx);
+            const now = new Date();
+            completionTimes[idx] = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            saveTasksProgress();
+            runConfetti();
+            renderTasks();
+          }
+        } else {
+          completedTasks = completedTasks.filter(i => i !== idx);
+          delete completionTimes[idx];
+          saveTasksProgress();
+          renderTasks();
+        }
+      });
     });
   }
 
-  // Add new task
-  addTaskBtn.addEventListener('click', () => {
-    const val = newTaskInput.value.trim();
-    if(val) {
-      tasks.push(val);
-      newTaskInput.value = '';
-      renderTasks();
-      renderAdmin();
-      saveData();
-    }
-  });
+  // Save tasks progress to localStorage
+  function saveTasksProgress() {
+    localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+    localStorage.setItem('completionTimes', JSON.stringify(completionTimes));
+  }
 
-  // Add new quote
-  addQuoteBtn.addEventListener('click', () => {
-    const text = newQuoteText.value.trim();
-    const author = newQuoteAuthor.value.trim() || "Unknown";
-    if(text) {
-      quotes.push({text, author});
-      newQuoteText.value = '';
-      newQuoteAuthor.value = '';
-      renderAdmin();
-      saveData();
-    }
-  });
+  // Random quote
+  function loadQuote() {
+    const r = Math.floor(Math.random() * quotes.length);
+    quoteText.textContent = `"${quotes[r].text}"`;
+    quoteAuthor.textContent = `— ${quotes[r].author}`;
+  }
 
-  // Edit and delete handlers in admin
-  manageTasksDiv.addEventListener('input', e => {
-    if(e.target.matches('input[type="text"]')) {
-      const idx = parseInt(e.target.getAttribute('data-idx'));
-      tasks[idx] = e.target.value;
-      saveData();
-    }
-  });
+  // Random psychological story
+  function loadStory() {
+    const r = Math.floor(Math.random() * stories.length);
+    storyContent.textContent = stories[r];
+  }
 
-  manageQuotesDiv.addEventListener('input', e => {
-    if(e.target.matches('textarea')) {
-      const idx = parseInt(e.target.getAttribute('data-idx'));
-      quotes[idx].text = e.target.value;
-      saveData();
-    } else if(e.target.matches('input[type="text"]')) {
-      const idx = parseInt(e.target.getAttribute('data-idx'));
-      quotes[idx].author = e.target.value;
-      saveData();
-    }
-  });
+  // Random great mind story
+  function loadGreats() {
+    const r = Math.floor(Math.random() * greats.length);
+    greatsContent.textContent = greats[r];
+  }
 
-  manageTasksDiv.addEventListener('click', e => {
-    if(e.target.matches('.delete-task-btn')) {
-      const idx = parseInt(e.target.getAttribute('data-idx'));
-      tasks.splice(idx, 1);
-      // Remove from completedTasks if present
-      const cIdx = completedTasks.indexOf(idx);
-      if(cIdx !== -1) completedTasks.splice(cIdx, 1);
-      renderTasks();
-      renderAdmin();
-      saveData();
-    }
-  });
+  // Random hard truth
+  function loadTruth() {
+    const r = Math.floor(Math.random() * truths.length);
+    truthsContent.textContent = truths[r];
+  }
 
-  manageQuotesDiv.addEventListener('click', e => {
-    if(e.target.matches('.delete-quote-btn')) {
-      const idx = parseInt(e.target.getAttribute('data-idx'));
-      quotes.splice(idx, 1);
-      renderAdmin();
-      saveData();
-    }
-  });
+  // Confetti animation for task completion
+  function runConfetti() {
+    const duration = 1 * 1000;
+    const animationEnd = Date.now() + duration;
+    const colors = ['#bb0000', '#ffffff', '#f4f1de', '#d4af37'];
 
-  // Load data on startup
-  loadData();
+    (function frame() {
+      confetti({
+        particleCount: 5,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: colors
+      });
+      confetti({
+        particleCount: 5,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: colors
+      });
+
+      if (Date.now() < animationEnd) {
+        requestAnimationFrame(frame);
+      }
+    }());
+  }
+
+  // Init
   renderTasks();
 
-</script>
+  // Start with quotes loaded
+  loadQuote();
 
-</body>
-</html>
+  // Tab style on first load
+  contents.forEach(c => {
+    if(c.id !== 'tasks') c.style.display = 'none';
+  });
+
+  // ----------- Edit tasks panel ------------
+  const editTasksToggle = document.getElementById('editTasksToggle');
+  const editTasksPanel = document.getElementById('editTasksPanel');
+  const tasksTextarea = document.getElementById('tasksTextarea');
+  const saveTasksBtn = document.getElementById('saveTasksBtn');
+
+  editTasksToggle.addEventListener('click', () => {
+    if(editTasksPanel.style.display === 'none' || !editTasksPanel.style.display) {
+      tasksTextarea.value = tasks.join('\n');
+      editTasksPanel.style.display = 'block';
+    } else {
+      editTasksPanel.style.display = 'none';
+    }
+  });
+
+  saveTasksBtn.addEventListener('click', () => {
+    const newTasks = tasksTextarea.value
+      .split('\n')
+      .map(t => t.trim())
+      .filter(t => t.length > 0);
+    if(newTasks.length > 0) {
+      tasks = newTasks;
+      // Reset progress on task change
+      completedTasks = [];
+      completionTimes = {};
+      saveTasksProgress();
+      renderTasks();
+      editTasksPanel.style.display = 'none';
+      alert('Tasks updated successfully!');
+    } else {
+      alert('Please enter at least one task.');
+    }
+  });
+
+  // Include confetti library
+  (function() {
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@
